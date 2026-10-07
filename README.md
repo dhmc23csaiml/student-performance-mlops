@@ -129,7 +129,7 @@ Access services:
 
 ---
 
-## 📊 Deliverables Mapping
+## Deliverables Mapping
 
 | Item # | Pipeline Component | Implemented File / Location |
 | :---: | :--- | :--- |
