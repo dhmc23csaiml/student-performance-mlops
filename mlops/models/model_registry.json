@@ -1,0 +1,59 @@
+{
+  "champion_model_name": "Gradient_Boosting_Classifier",
+  "champion_val_f1": 1.0,
+  "champion_test_roc_auc": 0.9848,
+  "artifact_path": "C:\\Users\\dhanu\\Desktop\\student-performance-mlops\\mlops\\models\\champion_model.joblib",
+  "all_model_evaluations": {
+    "Logistic_Regression_Baseline": {
+      "params": {
+        "penalty": "l2",
+        "C": 1.0,
+        "solver": "lbfgs"
+      },
+      "metrics": {
+        "val_accuracy": 0.9667,
+        "val_precision": 0.92,
+        "val_recall": 0.9583,
+        "val_f1": 0.9388,
+        "val_roc_auc": 0.9962,
+        "test_accuracy": 0.9889,
+        "test_f1": 0.9796,
+        "test_roc_auc": 0.9994
+      }
+    },
+    "Random_Forest_Classifier": {
+      "params": {
+        "n_estimators": 150,
+        "max_depth": 8,
+        "criterion": "gini"
+      },
+      "metrics": {
+        "val_accuracy": 0.9889,
+        "val_precision": 1.0,
+        "val_recall": 0.9583,
+        "val_f1": 0.9787,
+        "val_roc_auc": 1.0,
+        "test_accuracy": 1.0,
+        "test_f1": 1.0,
+        "test_roc_auc": 1.0
+      }
+    },
+    "Gradient_Boosting_Classifier": {
+      "params": {
+        "n_estimators": 120,
+        "learning_rate": 0.08,
+        "max_depth": 4
+      },
+      "metrics": {
+        "val_accuracy": 1.0,
+        "val_precision": 1.0,
+        "val_recall": 1.0,
+        "val_f1": 1.0,
+        "val_roc_auc": 1.0,
+        "test_accuracy": 0.9778,
+        "test_f1": 0.96,
+        "test_roc_auc": 0.9848
+      }
+    }
+  }
+}

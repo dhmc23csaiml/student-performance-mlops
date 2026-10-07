@@ -1,0 +1,44 @@
+stages:
+  generate_data:
+    cmd: python etl/generate_datasets.py
+    outs:
+      - data/raw/uci_student_demographics.csv
+      - data/raw/erp_attendance_logs.csv
+      - data/raw/lms_activity_submissions.csv
+      - data/raw/erp_internal_marks.csv
+
+  extract_and_stage:
+    cmd: python etl/extract.py
+    deps:
+      - data/raw
+      - etl/extract.py
+    outs:
+      - data/staging
+
+  validate_quality:
+    cmd: python etl/data_quality.py
+    deps:
+      - data/staging
+      - etl/data_quality.py
+    outs:
+      - data/cleaned
+      - data/rejected/rejected_records_audit.csv
+
+  transform_and_aggregate:
+    cmd: python etl/transform.py
+    deps:
+      - data/cleaned
+      - etl/transform.py
+    outs:
+      - data/analytics/student_risk_mart.csv
+
+  train_models:
+    cmd: python mlops/train.py
+    deps:
+      - data/analytics/student_risk_mart.csv
+      - mlops/features.py
+      - mlops/train.py
+    outs:
+      - mlops/models/champion_model.joblib
+      - mlops/models/feature_preprocessor.joblib
+      - mlops/models/model_registry.json

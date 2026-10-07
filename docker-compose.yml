@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Data Warehouse
+  postgres:
+    image: postgres:15-alpine
+    container_name: student_analytics_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-student_analytics_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. MLflow Tracking Server
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.10.0
+    container_name: student_analytics_mlflow
+    restart: always
+    ports:
+      - "5000:5000"
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root /mlflow/artifacts
+      --host 0.0.0.0
+      --port 5000
+    volumes:
+      - ./mlruns:/mlflow/artifacts
+    depends_on:
+      - postgres
+
+  # 3. FastAPI Prediction Microservice
+  fastapi_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: student_prediction_api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgres:5432/${DB_NAME:-student_analytics_db}
+    volumes:
+      - ./mlops/models:/app/mlops/models
+      - ./data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # 4. Streamlit Analytics & Intervention Dashboard
+  streamlit_dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: student_analytics_dashboard
+    restart: always
+    ports:
+      - "8501:8501"
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgres:5432/${DB_NAME:-student_analytics_db}
+    volumes:
+      - ./data:/app/data
+      - ./mlops/models:/app/mlops/models
+    depends_on:
+      - fastapi_service
+
+volumes:
+  postgres_data:

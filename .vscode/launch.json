@@ -1,0 +1,66 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "1. Run Master ETL Pipeline (Part 1)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pipeline_runner.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "2. Train & Register MLOps Models (Part 2)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mlops/train.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "3. Launch FastAPI Prediction Microservice",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "api.main:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8000",
+                "--reload"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "4. Launch Streamlit Analytics Dashboard",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "streamlit",
+            "args": [
+                "run",
+                "${workspaceFolder}/dashboard/app.py",
+                "--server.port=8501"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "5. Run Data Drift Analysis",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mlops/drift_monitor.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "6. Re-generate Synthetic Datasets",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/generate_datasets.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
