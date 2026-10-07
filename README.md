@@ -12,7 +12,7 @@
 ## 📌 Project Overview
 This repository delivers an end-to-end academic analytics and MLOps ecosystem that ingests, cleans, validates, and stores multi-source student records into a relational **Star Schema**, visualizes insights across **5 interactive dashboard views**, and serves real-time **dropout-risk predictions** via a containerized **FastAPI** microservice with **drift monitoring**.
 
-It fully satisfies all requirements of both **Assignment Part 1 (Data Pipeline)** and **Assignment Part 2 (MLOps Extension)**.
+The system provides a seamless bridge between modern **Data Engineering** and enterprise **MLOps** for proactive student intervention.
 
 ---
 
@@ -84,14 +84,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-#### 2. Execute Part 1: End-to-End Data Engineering Pipeline
+#### 2. Execute the Data Engineering Pipeline
 Runs data generation, extraction, data quality validation, transformations, and warehouse loading:
 ```bash
 python etl/pipeline_runner.py
 ```
 > **Output:** Populates `data/raw/`, `data/staging/`, `data/cleaned/`, `data/analytics/student_risk_mart.csv`, `data/rejected/rejected_records_audit.csv`, and initializes the local warehouse database!
 
-#### 3. Execute Part 2: Train & Register MLOps Models
+#### 3. Train & Register MLOps Models
 Fits candidate models, evaluates metrics, and registers the Champion Model:
 ```bash
 python mlops/train.py
@@ -129,29 +129,23 @@ Access services:
 
 ---
 
-## 📊 Assignment Part 1 Deliverables Mapping (50 Marks)
+## 📊 Deliverables Mapping
 
-| Item # | Submission Requirement | Implemented File / Location |
+| Item # | Pipeline Component | Implemented File / Location |
 | :---: | :--- | :--- |
-| **1** | Source code and ETL scripts | [etl/extract.py](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/etl/extract.py), [etl/data_quality.py](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/etl/data_quality.py), [etl/transform.py](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/etl/transform.py), [etl/load.py](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/etl/load.py) |
-| **2** | Airflow DAG workflow | [dags/student_analytics_dag.py](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/dags/student_analytics_dag.py) |
-| **3** | Database schema & sample populated tables | [database/schema.sql](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/database/schema.sql), [database/db_manager.py](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/database/db_manager.py) |
-| **4** | Dataset source information & access | [docs/DATA_DICTIONARY.md](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/docs/DATA_DICTIONARY.md) (Section 1) |
-| **5** | Architecture diagram & pipeline flow | [docs/ARCHITECTURE_DESIGN.md](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/docs/ARCHITECTURE_DESIGN.md) |
-| **6** | Data dictionary & validation rules | [docs/DATA_DICTIONARY.md](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/docs/DATA_DICTIONARY.md) (Section 3) |
-| **7** | Streamlit application (5 Views) | [dashboard/app.py](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/dashboard/app.py) |
-| **8** | Project report (8-10 pages) | [docs/PROJECT_REPORT_8_TO_10_PAGES.md](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/docs/PROJECT_REPORT_8_TO_10_PAGES.md) |
-| **9** | Execution evidence | Auto-verified via pipeline logs & audit JSON |
-| **10**| README with setup & run instructions | [README.md](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/README.md) |
-
----
-
-## 🤖 Assignment Part 2 Deliverables Mapping (50 Marks)
-
-- **Prediction Target:** Defined as `dropout_risk` (1 = At Risk / Dropout, 0 = Safe / On Track).
-- **Candidate Models:** Logistic Regression (Baseline), Random Forest, and Gradient Boosting.
-- **Experiment Tracking:** MLflow parameter, metric, and artifact logging with automated Champion model registration.
-- **Data & Model Versioning:** Tracked via [dvc.yaml](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/dvc.yaml).
-- **FastAPI Serving:** Pydantic validation, health checks, single prediction (`POST /predict`), batch prediction (`POST /predict-batch`), latency telemetry.
-- **Containerization:** Production Dockerfiles (`Dockerfile.api`, `Dockerfile.dashboard`) and `docker-compose.yml`.
-- **Drift Monitoring:** Statistical PSI and Kolmogorov-Smirnov test engine in [mlops/drift_monitor.py](file:///C:/Users/dhanu/.gemini/antigravity/scratch/student-performance-mlops/mlops/drift_monitor.py).
+| **1** | Source code and ETL scripts | [`etl/extract.py`](etl/extract.py), [`etl/data_quality.py`](etl/data_quality.py), [`etl/transform.py`](etl/transform.py), [`etl/load.py`](etl/load.py) |
+| **2** | Airflow DAG orchestration | [`dags/student_analytics_dag.py`](dags/student_analytics_dag.py) |
+| **3** | Database schema & populated tables | [`database/schema.sql`](database/schema.sql), [`database/db_manager.py`](database/db_manager.py) |
+| **4** | Dataset source information & access | [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) |
+| **5** | Architecture diagram & pipeline flow | [`docs/ARCHITECTURE_DESIGN.md`](docs/ARCHITECTURE_DESIGN.md) |
+| **6** | Data dictionary & validation rules | [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) |
+| **7** | Streamlit application (5 Views) | [`dashboard/app.py`](dashboard/app.py) |
+| **8** | Project technical report | [`docs/PROJECT_REPORT_8_TO_10_PAGES.md`](docs/PROJECT_REPORT_8_TO_10_PAGES.md) |
+| **9** | Execution evidence & logs | Auto-verified via pipeline logs & `data/ingestion_audit_log.json` |
+| **10**| Setup & run instructions | [`README.md`](README.md) |
+| **11**| Feature engineering & model training | [`mlops/features.py`](mlops/features.py), [`mlops/train.py`](mlops/train.py) |
+| **12**| Model registry & Champion model | [`mlops/models/champion_model.joblib`](mlops/models/champion_model.joblib) |
+| **13**| FastAPI inference microservice | [`api/main.py`](api/main.py), [`api/schemas.py`](api/schemas.py) |
+| **14**| Data drift monitoring engine | [`mlops/drift_monitor.py`](mlops/drift_monitor.py) |
+| **15**| Docker & Docker Compose setup | [`Dockerfile.api`](Dockerfile.api), [`Dockerfile.dashboard`](Dockerfile.dashboard), [`docker-compose.yml`](docker-compose.yml) |
+| **16**| Data & model artifact versioning | [`dvc.yaml`](dvc.yaml) |
