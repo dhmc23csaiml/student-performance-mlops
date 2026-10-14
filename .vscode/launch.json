@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "1. Run Master ETL Pipeline (Part 1)",
+            "name": "1. Run Master ETL Pipeline",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/etl/pipeline_runner.py",
@@ -10,7 +10,15 @@
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "2. Train & Register MLOps Models (Part 2)",
+            "name": "2. Run Airflow DAG (Local Runner)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/dags/run_dag_locally.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "3. Train & Register MLOps Models",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/mlops/train.py",
@@ -18,7 +26,7 @@
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "3. Launch FastAPI Prediction Microservice",
+            "name": "4. Launch FastAPI Prediction Microservice",
             "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
@@ -34,7 +42,7 @@
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "4. Launch Streamlit Analytics Dashboard",
+            "name": "5. Launch Streamlit Analytics Dashboard",
             "type": "debugpy",
             "request": "launch",
             "module": "streamlit",
@@ -47,7 +55,7 @@
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "5. Run Data Drift Analysis",
+            "name": "6. Run Data Drift Analysis",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/mlops/drift_monitor.py",
@@ -55,7 +63,7 @@
             "cwd": "${workspaceFolder}"
         },
         {
-            "name": "6. Re-generate Synthetic Datasets",
+            "name": "7. Re-generate Synthetic Datasets",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/etl/generate_datasets.py",

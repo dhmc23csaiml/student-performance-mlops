@@ -21,7 +21,64 @@ services:
       timeout: 5s
       retries: 5
 
-  # 2. MLflow Tracking Server
+  # 2. Apache Airflow Init (Creates DB & Admin User)
+  airflow-init:
+    image: apache/airflow:2.8.1-python3.11
+    container_name: student_analytics_airflow_init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+      - _AIRFLOW_DB_MIGRATE=true
+      - _AIRFLOW_WWW_USER_CREATE=true
+      - _AIRFLOW_WWW_USER_USERNAME=admin
+      - _AIRFLOW_WWW_USER_PASSWORD=admin
+    command: version
+    volumes:
+      - ./dags:/opt/airflow/dags
+
+  # 3. Apache Airflow Webserver (UI on Port 8080)
+  airflow-webserver:
+    image: apache/airflow:2.8.1-python3.11
+    container_name: student_analytics_airflow_webserver
+    restart: always
+    depends_on:
+      - airflow-init
+    ports:
+      - "8080:8080"
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+      - AIRFLOW__WEBSERVER__SECRET_KEY=secret_key_student_analytics_2026
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./etl:/opt/airflow/etl
+      - ./data:/opt/airflow/data
+      - ./database:/opt/airflow/database
+      - ./config.py:/opt/airflow/config.py
+    command: webserver
+
+  # 4. Apache Airflow Scheduler (Orchestrates DAG execution)
+  airflow-scheduler:
+    image: apache/airflow:2.8.1-python3.11
+    container_name: student_analytics_airflow_scheduler
+    restart: always
+    depends_on:
+      - airflow-init
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./etl:/opt/airflow/etl
+      - ./data:/opt/airflow/data
+      - ./database:/opt/airflow/database
+      - ./config.py:/opt/airflow/config.py
+    command: scheduler
+
+  # 5. MLflow Tracking Server
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.10.0
     container_name: student_analytics_mlflow
@@ -37,9 +94,10 @@ services:
     volumes:
       - ./mlruns:/mlflow/artifacts
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
-  # 3. FastAPI Prediction Microservice
+  # 6. FastAPI Prediction Microservice
   fastapi_service:
     build:
       context: .
@@ -57,7 +115,7 @@ services:
       postgres:
         condition: service_healthy
 
-  # 4. Streamlit Analytics & Intervention Dashboard
+  # 7. Streamlit Analytics & Intervention Dashboard
   streamlit_dashboard:
     build:
       context: .

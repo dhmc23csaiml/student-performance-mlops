@@ -178,5 +178,41 @@
     "row_count": 9600,
     "file_checksum_md5": "bd4da2db6cafbb0cba00cd7ca1b80b87",
     "extracted_at": "2026-10-07T13:38:46.346200"
+  },
+  {
+    "source_name": "UCI_Student_Demographics",
+    "file_name": "uci_student_demographics.csv",
+    "staged_path": "C:\\Users\\dhanu\\Desktop\\student-performance-mlops\\data\\staging\\uci_student_demographics.csv",
+    "status": "SUCCESS",
+    "row_count": 600,
+    "file_checksum_md5": "a7a2f61b4d6db2ac09f130a09a4acda7",
+    "extracted_at": "2026-10-07T15:30:00.948314"
+  },
+  {
+    "source_name": "ERP_Attendance_Logs",
+    "file_name": "erp_attendance_logs.csv",
+    "staged_path": "C:\\Users\\dhanu\\Desktop\\student-performance-mlops\\data\\staging\\erp_attendance_logs.csv",
+    "status": "SUCCESS",
+    "row_count": 24001,
+    "file_checksum_md5": "863dfc8797742f20e861f0ad004cd8b2",
+    "extracted_at": "2026-10-07T15:30:01.092260"
+  },
+  {
+    "source_name": "LMS_Activity_Submissions",
+    "file_name": "lms_activity_submissions.csv",
+    "staged_path": "C:\\Users\\dhanu\\Desktop\\student-performance-mlops\\data\\staging\\lms_activity_submissions.csv",
+    "status": "SUCCESS",
+    "row_count": 2400,
+    "file_checksum_md5": "590ba705399828860fb6737fb6a58d65",
+    "extracted_at": "2026-10-07T15:30:01.119851"
+  },
+  {
+    "source_name": "ERP_Internal_Marks",
+    "file_name": "erp_internal_marks.csv",
+    "staged_path": "C:\\Users\\dhanu\\Desktop\\student-performance-mlops\\data\\staging\\erp_internal_marks.csv",
+    "status": "SUCCESS",
+    "row_count": 9600,
+    "file_checksum_md5": "bd4da2db6cafbb0cba00cd7ca1b80b87",
+    "extracted_at": "2026-10-07T15:30:01.187744"
   }
 ]
